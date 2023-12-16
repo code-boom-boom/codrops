@@ -58,11 +58,19 @@ export default class RainRenderer {
     this.programWater = gl.program
 
     gl.createUniform('2f', 'resolution', this.width, this.height)
-    gl.createUniform('1f', 'textureRatio', this.imageBg.width / this.imageBg.height)
+    gl.createUniform(
+      '1f',
+      'textureRatio',
+      this.imageBg.width / this.imageBg.height
+    )
     gl.createUniform('1i', 'renderShine', this.imageShine != null)
     gl.createUniform('1i', 'renderShadow', this.options.renderShadow)
     gl.createUniform('1f', 'minRefraction', this.options.minRefraction)
-    gl.createUniform('1f', 'refractionDelta', this.options.maxRefraction - this.options.minRefraction)
+    gl.createUniform(
+      '1f',
+      'refractionDelta',
+      this.options.maxRefraction - this.options.minRefraction
+    )
     gl.createUniform('1f', 'brightness', this.options.brightness)
     gl.createUniform('1f', 'alphaMultiply', this.options.alphaMultiply)
     gl.createUniform('1f', 'alphaSubtract', this.options.alphaSubtract)
@@ -72,7 +80,10 @@ export default class RainRenderer {
     gl.createTexture(null, 0)
 
     this.textures = [
-      { name: 'textureShine', img: this.imageShine == null ? createCanvas(2, 2) : this.imageShine },
+      {
+        name: 'textureShine',
+        img: this.imageShine == null ? createCanvas(2, 2) : this.imageShine
+      },
       { name: 'textureFg', img: this.imageFg },
       { name: 'textureBg', img: this.imageBg }
     ]

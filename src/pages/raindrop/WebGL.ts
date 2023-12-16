@@ -2,7 +2,11 @@ export function getContext(canvas: HTMLCanvasElement, options = {}) {
   return canvas.getContext('webgl', options) as WebGLRenderingContext
 }
 
-export function createProgram(gl: WebGLRenderingContext, vertexScript: string, fragScript: string) {
+export function createProgram(
+  gl: WebGLRenderingContext,
+  vertexScript: string,
+  fragScript: string
+) {
   const vertexShader = createShader(gl, vertexScript, gl.VERTEX_SHADER)
   const fragShader = createShader(gl, fragScript, gl.FRAGMENT_SHADER)
 
@@ -24,14 +28,13 @@ export function createProgram(gl: WebGLRenderingContext, vertexScript: string, f
 
   const texCoordBuffer = gl.createBuffer()
   gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer)
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    -1.0, -1.0,
-    1.0, -1.0,
-    -1.0, 1.0,
-    -1.0, 1.0,
-    1.0, -1.0,
-    1.0, 1.0
-  ]), gl.STATIC_DRAW)
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([
+      -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0
+    ]),
+    gl.STATIC_DRAW
+  )
 
   gl.enableVertexAttribArray(texCoordLocation)
   gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0)
@@ -44,7 +47,11 @@ export function createProgram(gl: WebGLRenderingContext, vertexScript: string, f
   return program
 }
 
-export function createShader(gl: WebGLRenderingContext, script: string, type: number) {
+export function createShader(
+  gl: WebGLRenderingContext,
+  script: string,
+  type: number
+) {
   const shader = gl.createShader(type)
   if (!shader) return null
   gl.shaderSource(shader, script)
@@ -59,13 +66,23 @@ export function createShader(gl: WebGLRenderingContext, script: string, type: nu
   return shader
 }
 
-export function createUniform(gl: WebGLRenderingContext, program: WebGLProgram, type: string, name: string, ...args: any[]) {
+export function createUniform(
+  gl: WebGLRenderingContext,
+  program: WebGLProgram,
+  type: string,
+  name: string,
+  ...args: any[]
+) {
   const location = gl.getUniformLocation(program, 'u_' + name)
   // @ts-ignore
   gl['uniform' + type](location, ...args)
 }
 
-export function createTexture(gl: WebGLRenderingContext, source: TexImageSource | null, i: number) {
+export function createTexture(
+  gl: WebGLRenderingContext,
+  source: TexImageSource | null,
+  i: number
+) {
   const texture = gl.createTexture()
   activeTexture(gl, i)
   gl.bindTexture(gl.TEXTURE_2D, texture)
@@ -89,20 +106,27 @@ export function activeTexture(gl: WebGLRenderingContext, i: number) {
   gl.activeTexture(gl['TEXTURE' + i])
 }
 
-export function updateTexture(gl: WebGLRenderingContext, source: TexImageSource) {
+export function updateTexture(
+  gl: WebGLRenderingContext,
+  source: TexImageSource
+) {
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source)
 }
 
-export function setRectangle(gl: WebGLRenderingContext, x: number, y: number, width: number, height: number) {
+export function setRectangle(
+  gl: WebGLRenderingContext,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+) {
   const x1 = x
   const x2 = x + width
   const y1 = y
   const y2 = y + height
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-    x1, y1,
-    x2, y1,
-    x1, y2,
-    x1, y2,
-    x2, y1,
-    x2, y2]), gl.STATIC_DRAW)
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array([x1, y1, x2, y1, x1, y2, x1, y2, x2, y1, x2, y2]),
+    gl.STATIC_DRAW
+  )
 }

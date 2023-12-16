@@ -8,7 +8,12 @@ export default class GL {
   gl: WebGLRenderingContext
   program: WebGLProgram | null
 
-  constructor(canvas: HTMLCanvasElement, options: UnknownProps, vert: string, frag: string) {
+  constructor(
+    canvas: HTMLCanvasElement,
+    options: UnknownProps,
+    vert: string,
+    frag: string
+  ) {
     this.canvas = canvas
     this.width = canvas.width
     this.height = canvas.height

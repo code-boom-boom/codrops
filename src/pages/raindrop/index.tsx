@@ -3,7 +3,7 @@ import loadImages from './ImageLoader'
 import Raindrops from './Raindrops'
 import RainRenderer from './RainRenderer'
 import createCanvas from './createCanvas'
-import { HTMLImageElement } from 'happy-dom'
+import TweenLite from 'gsap'
 
 const textureBgSize = {
   width: 384,
@@ -14,6 +14,7 @@ const textureFgSize = {
   height: 64
 }
 
+const parallax = { x: 0, y: 0 }
 
 function RainDrop() {
   const mountRef = useRef<HTMLCanvasElement>(null)
@@ -119,22 +120,67 @@ function RainDrop() {
       const textureBg = createCanvas(textureBgSize.width, textureBgSize.height)
       const textureBgCtx = textureBg.getContext('2d')
 
-      const generateTextures = (fg: CanvasImageSource, bg: CanvasImageSource, alpha = 1) => {
+      const generateTextures = (
+        fg: CanvasImageSource,
+        bg: CanvasImageSource,
+        alpha = 1
+      ) => {
         if (!textureFgCtx || !textureBgCtx) return
         textureFgCtx.globalAlpha = alpha
-        textureFgCtx.drawImage(fg, 0, 0, textureFgSize.width, textureFgSize.height)
+        textureFgCtx.drawImage(
+          fg,
+          0,
+          0,
+          textureFgSize.width,
+          textureFgSize.height
+        )
 
         textureBgCtx.globalAlpha = alpha
-        textureBgCtx.drawImage(bg, 0, 0, textureBgSize.width, textureBgSize.height)
+        textureBgCtx.drawImage(
+          bg,
+          0,
+          0,
+          textureBgSize.width,
+          textureBgSize.height
+        )
       }
 
       generateTextures(textureRainFg, textureRainBg)
 
-      const renderer = new RainRenderer(canvas, raindrops.canvas, textureFg, textureBg, null, {
-        brightness: 1.04,
-        alphaMultiply: 6,
-        alphaSubtract: 3
-      })
+      const renderer = new RainRenderer(
+        canvas,
+        raindrops.canvas,
+        textureFg,
+        textureBg,
+        null,
+        {
+          brightness: 1.04,
+          alphaMultiply: 6,
+          alphaSubtract: 3
+        }
+      )
+
+      const setupParallax = () => {
+        document.addEventListener('mousemove', (event) => {
+          const x = event.pageX
+          const y = event.pageY
+
+          TweenLite.to(parallax, 1, {
+            x: ((x / canvas.width) * 2) - 1,
+            y: ((y / canvas.height) * 2) - 1,
+            ease: 'power1.out',
+            onUpdate: () => {
+              renderer.parallaxX = parallax.x
+              renderer.parallaxY = parallax.y
+            }
+          })
+        })
+      }
+      const setupEvents = () => {
+        setupParallax()
+      }
+
+      setupEvents()
     })
   }, [])
   return (
