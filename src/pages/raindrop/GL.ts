@@ -34,7 +34,7 @@ export default class GL {
   }
 
   createTexture(source: HTMLCanvasElement | null, i: number) {
-    WebGL.createTexture(this.gl, source, i)
+    return WebGL.createTexture(this.gl, source, i)
   }
 
   createUniform(type: string, name: string, ...v: any[]) {

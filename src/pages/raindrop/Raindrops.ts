@@ -44,8 +44,8 @@ const defaultOptions: RaindropsOptionsType = {
 export default class Raindrops {
   dropColor: HTMLImageElement
   dropAlpha: HTMLImageElement
-  canvas: HTMLCanvasElement | null = null
-  ctx: CanvasRenderingContext2D | null = null
+  canvas: HTMLCanvasElement
+  ctx: CanvasRenderingContext2D | null
   width = 0
   height = 0
   scale = 0
@@ -74,12 +74,12 @@ export default class Raindrops {
     this.dropAlpha = dropAlpha
     this.dropColor = dropColor
     this.options = { ...defaultOptions, ...options }
+    this.canvas = createCanvas(this.width, this.height)
+    this.ctx = this.canvas.getContext('2d')
     this.init()
   }
 
   init() {
-    this.canvas = createCanvas(this.width, this.height)
-    this.ctx = this.canvas.getContext('2d')
     this.droplets = createCanvas(
       this.width * this.dropletsPixelDensity,
       this.height * this.dropletsPixelDensity
@@ -118,37 +118,6 @@ export default class Raindrops {
     })
   }
 
-  drawDrop(ctx: CanvasRenderingContext2D, drop: DropType) {
-    if (this.dropsGfx.length > 0) {
-      const x = drop.x
-      const y = drop.y
-      const r = drop.r
-      const spreadX = drop.spreadX
-      const spreadY = drop.spreadY
-
-      const scaleX = 1
-      const scaleY = 1.5
-
-      let d = Math.max(
-        0,
-        Math.min(1, ((r - this.options.minR) / this.deltaR()) * 0.9)
-      )
-      d *= 1 / ((drop.spreadX + drop.spreadY) * 0.5 + 1)
-
-      ctx.globalAlpha = 1
-      ctx.globalCompositeOperation = 'source-over'
-
-      d = Math.floor(d * (this.dropsGfx.length - 1))
-      ctx.drawImage(
-        this.dropsGfx[d],
-        (x - r * scaleX * (spreadX + 1)) * this.scale,
-        (y - r * scaleY * (spreadY + 1)) * this.scale,
-        r * 2 * scaleX * (spreadX + 1) * this.scale,
-        r * 2 * scaleY * (spreadY + 1) * this.scale
-      )
-    }
-  }
-
   renderDropsGfx() {
     const dropBuffer = createCanvas(dropSize, dropSize)
     const dropBufferCtx = dropBuffer.getContext('2d')
@@ -185,6 +154,37 @@ export default class Raindrops {
     clearDropletsCtx.fill()
   }
 
+  drawDrop(ctx: CanvasRenderingContext2D, drop: DropType) {
+    if (this.dropsGfx.length > 0) {
+      const x = drop.x
+      const y = drop.y
+      const r = drop.r
+      const spreadX = drop.spreadX
+      const spreadY = drop.spreadY
+
+      const scaleX = 1
+      const scaleY = 1.5
+
+      let d = Math.max(
+        0,
+        Math.min(1, ((r - this.options.minR) / this.deltaR()) * 0.9)
+      )
+      d *= 1 / ((drop.spreadX + drop.spreadY) * 0.5 + 1)
+
+      ctx.globalAlpha = 1
+      ctx.globalCompositeOperation = 'source-over'
+
+      d = Math.floor(d * (this.dropsGfx.length - 1))
+      ctx.drawImage(
+        this.dropsGfx[d],
+        (x - r * scaleX * (spreadX + 1)) * this.scale,
+        (y - r * scaleY * (spreadY + 1)) * this.scale,
+        r * 2 * scaleX * (spreadX + 1) * this.scale,
+        r * 2 * scaleY * (spreadY + 1) * this.scale
+      )
+    }
+  }
+
   clearDroplets(x: number, y: number, r = 30) {
     const ctx = this.dropletsCtx
     if (!ctx || !this.clearDropletsGfx) return
@@ -209,6 +209,17 @@ export default class Raindrops {
     return { ...Drop, ...options }
   }
 
+  addDrop(drop: DropType) {
+    if (
+      this.drops.length >= this.options.maxDrops * this.areaMultiplier() ||
+      drop == null
+    )
+      return false
+
+    this.drops.push(drop)
+    return true
+  }
+
   updateRain(timeScale: number) {
     const rainDrops = []
     if (this.options.raining) {
@@ -217,7 +228,7 @@ export default class Raindrops {
       while (
         chance(this.options.rainChance * timeScale * this.areaMultiplier()) &&
         count < limit
-        ) {
+      ) {
         count++
         const r = random(this.options.minR, this.options.maxR, (n) => {
           return Math.pow(n, 3)
@@ -259,7 +270,7 @@ export default class Raindrops {
     if (this.textureCleaningIterations > 0) {
       this.textureCleaningIterations -= timeScale
       this.dropletsCtx.globalCompositeOperation = 'destination-out'
-      this.dropletsCtx.fillStyle = 'rgba(0,0,0,' + 0.05 * timeScale + ')'
+      this.dropletsCtx.fillStyle = 'rgba(0, 0, 0, ' + 0.05 * timeScale + ')'
       this.dropletsCtx.fillRect(
         0,
         0,
@@ -299,18 +310,15 @@ export default class Raindrops {
 
     this.drops.forEach((drop: DropType, i) => {
       if (!drop.killed) {
-        // update gravity
-        // (chance of drops "creeping down")
         if (
           chance(
             (drop.r - this.options.minR * this.options.dropFallMultiplier) *
-            (0.1 / this.deltaR()) *
-            timeScale
+              (0.1 / this.deltaR()) *
+              timeScale
           )
         ) {
           drop.momentum += random((drop.r / this.options.maxR) * 4)
         }
-        // clean small drops
         if (
           this.options.autoShrink &&
           drop.r <= this.options.minR &&
@@ -318,11 +326,9 @@ export default class Raindrops {
         ) {
           drop.shrink += 0.01
         }
-        //update shrinkage
         drop.r -= drop.shrink * timeScale
         if (drop.r <= 0) drop.killed = true
 
-        // update trails
         if (this.options.raining) {
           drop.lastSpawn += drop.momentum * timeScale * this.options.trailRate
           if (drop.lastSpawn > drop.nextSpawn) {
@@ -382,10 +388,10 @@ export default class Raindrops {
               if (
                 d <
                 (drop.r + drop2.r) *
-                (this.options.collisionRadius +
-                  drop.momentum *
-                  this.options.collisionRadiusIncrease *
-                  timeScale)
+                  (this.options.collisionRadius +
+                    drop.momentum *
+                      this.options.collisionRadiusIncrease *
+                      timeScale)
               ) {
                 const pi = Math.PI
                 const r1 = drop.r
@@ -406,8 +412,8 @@ export default class Raindrops {
                   Math.min(
                     40,
                     drop.momentum +
-                    targetR * this.options.collisionBoostMultiplier +
-                    this.options.collisionBoost
+                      targetR * this.options.collisionBoostMultiplier +
+                      this.options.collisionBoost
                   )
                 )
               }

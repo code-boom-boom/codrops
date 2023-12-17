@@ -66,18 +66,6 @@ export function createShader(
   return shader
 }
 
-export function createUniform(
-  gl: WebGLRenderingContext,
-  program: WebGLProgram,
-  type: string,
-  name: string,
-  ...args: any[]
-) {
-  const location = gl.getUniformLocation(program, 'u_' + name)
-  // @ts-ignore
-  gl['uniform' + type](location, ...args)
-}
-
 export function createTexture(
   gl: WebGLRenderingContext,
   source: TexImageSource | null,
@@ -99,6 +87,18 @@ export function createTexture(
   }
 
   return texture
+}
+
+export function createUniform(
+  gl: WebGLRenderingContext,
+  program: WebGLProgram,
+  type: string,
+  name: string,
+  ...args: any[]
+) {
+  const location = gl.getUniformLocation(program, 'u_' + name)
+  // @ts-ignore
+  gl['uniform' + type](location, ...args)
 }
 
 export function activeTexture(gl: WebGLRenderingContext, i: number) {
