@@ -4,7 +4,11 @@ export function times(n: number, f: () => void) {
   }
 }
 
-export function random(from: number | null = null, to: number | null = null, interpolation: ((a: number) => number) | null = null) {
+export function random(
+  from: number | null = null,
+  to: number | null = null,
+  interpolation: ((a: number) => number) | null = null
+) {
   if (from == null && to === null) {
     from = 0
     to = 1
@@ -22,7 +26,7 @@ export function random(from: number | null = null, to: number | null = null, int
       return n
     }
   }
-  return from + (interpolation(Math.random()) * delta)
+  return from + interpolation(Math.random()) * delta
 }
 
 export function chance(c: number) {

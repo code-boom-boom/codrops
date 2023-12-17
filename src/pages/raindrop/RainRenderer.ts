@@ -99,8 +99,8 @@ export default class RainRenderer {
   draw() {
     if (!this.programWater || !this.gl) return
     this.gl.useProgram(this.programWater)
-    this.gl.createUniform('2f', 'parallex', this.parallaxX, this.parallaxY)
-    this.updateTextures()
+    this.gl.createUniform('2f', 'parallax', this.parallaxX, this.parallaxY)
+    this.updateTexture()
     this.gl.draw()
 
     requestAnimationFrame(this.draw.bind(this))
@@ -112,5 +112,11 @@ export default class RainRenderer {
       this.gl.activeTexture(i + 1)
       this.gl.updateTexture(texture.img)
     })
+  }
+
+  updateTexture() {
+    if (!this.gl) return
+    this.gl.activeTexture(0)
+    this.gl.updateTexture(this.canvasLiquid)
   }
 }

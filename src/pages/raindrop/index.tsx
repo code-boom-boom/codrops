@@ -169,8 +169,8 @@ function RainDrop() {
           const y = event.pageY
 
           TweenLite.to(parallax, 1, {
-            x: ((x / canvas.width) * 2) - 1,
-            y: ((y / canvas.height) * 2) - 1,
+            x: (x / canvas.width) * 2 - 1,
+            y: (y / canvas.height) * 2 - 1,
             ease: 'power1.out',
             onUpdate: () => {
               renderer.parallaxX = parallax.x
@@ -262,17 +262,23 @@ function RainDrop() {
 
         raindrops.clearDrops()
 
-        TweenLite.fromTo(blend, 1, { v: 0 }, {
-          v: 1,
-          onUpdate: () => {
-            generateTextures(weatherData.fg, weatherData.bg, blend.v)
-            renderer.updateTextures()
+        TweenLite.fromTo(
+          blend,
+          1,
+          { v: 0 },
+          {
+            v: 1,
+            onUpdate: () => {
+              generateTextures(currentWeatherData.fg, currentWeatherData.bg, blend.v)
+              renderer.updateTextures()
+            }
           }
-        })
+        )
       }
 
       const setupWeather = () => {
         setupWeatherData()
+        updateWeather()
       }
       const setupEvents = () => {
         setupParallax()
