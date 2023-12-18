@@ -20,7 +20,7 @@ const loadImages = (images: Array<ImageSourceType | string>) =>
   Promise.all(images.map((src, i) => loadImage(src, i)))
 
 export default function ImageLoader(images: Array<ImageSourceType | string>) {
-  return new Promise<ImageExportType>((resolve, reject) => {
+  return new Promise<ImageExportType>((resolve) => {
     loadImages(images).then((loadedImages: ImageType[]) => {
       const r: ImageExportType = {}
       loadedImages.forEach((curImage) => {

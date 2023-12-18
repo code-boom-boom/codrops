@@ -1,31 +1,20 @@
-export function times(n: number, f: () => void) {
+export function times(n: number, f: (q: number) => void) {
   for (let i = 0; i < n; i++) {
-    f()
+    f(i)
   }
 }
 
 export function random(
-  from: number | null = null,
-  to: number | null = null,
-  interpolation: ((a: number) => number) | null = null
+  from: number = 0,
+  to: number = 1,
+  interpolation: (a: number) => number = (n) => n
 ) {
-  if (from == null && to === null) {
-    from = 0
-    to = 1
-  } else if (from != null && to == null) {
+  if (arguments.length === 1) {
     to = from
     from = 0
-  } else {
-    from = 0
-    to = 1
   }
-  const delta = to - from
 
-  if (interpolation == null) {
-    interpolation = (n) => {
-      return n
-    }
-  }
+  const delta = to - from
   return from + interpolation(Math.random()) * delta
 }
 

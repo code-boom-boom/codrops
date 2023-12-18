@@ -286,7 +286,7 @@ export default class Raindrops {
         this.drawDroplet(
           random(this.width / this.scale),
           random(this.height / this.scale),
-          random(...this.options.dropletsSize, null, (n) => {
+          random(...this.options.dropletsSize, (n) => {
             return n * n
           })
         )

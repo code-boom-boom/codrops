@@ -25,7 +25,7 @@ export interface RaindropsOptionsType {
   rainChance: number
   rainLimit: number
   dropletsRate: number
-  dropletsSize: number[]
+  dropletsSize: [number, number]
   dropletsCleaningRadiusMultiplier: number
   raining: boolean
   globalTimeScale: number
