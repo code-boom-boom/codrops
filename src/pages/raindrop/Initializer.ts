@@ -113,12 +113,10 @@ const initializer = async (target: HTMLCanvasElement) => {
 
 const init = () => {
   const dpi = window.devicePixelRatio
-  const width = window.innerWidth
-  const height = window.innerHeight
-  canvas.width = width * dpi
-  canvas.height = height * dpi
-  canvas.style.width = width + 'px'
-  canvas.style.height = height + 'px'
+  canvas.width = window.innerWidth * dpi
+  canvas.height = window.innerHeight * dpi
+  canvas.style.width = window.innerWidth + 'px'
+  canvas.style.height = window.innerHeight + 'px'
 
   raindrops = new Raindrops(
     canvas.width,
