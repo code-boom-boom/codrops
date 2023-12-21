@@ -14,28 +14,34 @@ import { GiNuclear } from 'react-icons/gi'
 interface weatherType {
   type: WeatherTypes
   icon: IconType
+  sound: string
 }
 
 const weathers: Array<weatherType> = [
   {
     type: 'rain',
-    icon: IoRainyOutline
+    icon: IoRainyOutline,
+    sound: 'assets/raindrop/sound/rain.mp3'
   },
   {
     type: 'drizzle',
-    icon: BsCloudDrizzle
+    icon: BsCloudDrizzle,
+    sound: 'assets/raindrop/sound/rain.mp3'
   },
   {
     type: 'storm',
-    icon: IoThunderstormOutline
+    icon: IoThunderstormOutline,
+    sound: 'assets/raindrop/sound/thunder.mp3'
   },
   {
     type: 'sunny',
-    icon: IoSunnyOutline
+    icon: IoSunnyOutline,
+    sound: 'assets/raindrop/sound/sunny.mp3'
   },
   {
     type: 'fallout',
-    icon: GiNuclear
+    icon: GiNuclear,
+    sound: 'assets/raindrop/sound/rain.mp3'
   }
 ]
 
@@ -60,6 +66,15 @@ function RainDrop() {
   useEffect(() => {
     if (initialized) {
       updateWeather(weather)
+
+      const sound = new Audio(
+        weathers.find((item) => item.type === weather)?.sound
+      )
+      sound.autoplay = true
+      sound.loop = true
+      sound.play().catch(() => console.error('Error playing sound'))
+
+      return () => sound.pause()
     }
   }, [weather])
   return (
