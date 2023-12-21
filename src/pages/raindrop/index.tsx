@@ -41,7 +41,7 @@ const weathers: Array<weatherType> = [
 
 function RainDrop() {
   const mountRef = useRef<HTMLCanvasElement>(null)
-  const [weather, setWeather] = useState<WeatherTypes>('storm')
+  const [weather, setWeather] = useState<WeatherTypes>('rain')
   const [initialized, setInitialized] = useState<boolean>(false)
 
   useEffect(() => {
@@ -69,8 +69,8 @@ function RainDrop() {
     >
       <canvas ref={mountRef} />
       <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-12">
-        <span className="text-center text-7xl font-bold uppercase text-blue-950">
-          Rain
+        <span className="text-center text-[7rem] font-bold uppercase text-blue-950">
+          {weather}
         </span>
         <div className="flex items-center justify-center gap-8">
           {weathers.map((item) => (
