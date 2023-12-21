@@ -66,3 +66,5 @@ export interface RainRendererOptionsType {
   parallaxBg: number
   parallaxFg: number
 }
+
+export type WeatherTypes = 'rain' | 'storm' | 'fallout' | 'sunny' | 'drizzle'

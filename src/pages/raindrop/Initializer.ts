@@ -3,7 +3,7 @@ import Raindrops from './Raindrops'
 import RainRenderer from './RainRenderer'
 import createCanvas from './createCanvas'
 import TweenLite from 'gsap'
-import { UnknownProps } from './Types'
+import { UnknownProps, WeatherTypes } from './Types'
 import { chance, random, times } from './Helpers'
 
 let textureRainFg: CanvasImageSource,
@@ -193,7 +193,6 @@ const setupFlash = () => {
 
 const setupWeather = () => {
   setupWeatherData()
-  updateWeather()
 }
 
 const setupWeatherData = () => {
@@ -271,8 +270,8 @@ const setupWeatherData = () => {
   }
 }
 
-const updateWeather = () => {
-  const data = weatherData.rain
+const updateWeather = (weather: WeatherTypes) => {
+  const data = weatherData[weather]
   curWeatherData = data
 
   raindrops.options = { ...raindrops.options, ...data }
@@ -302,14 +301,17 @@ const flash = (
   const flashValue = { v: 0 }
 
   function transitionFlash(to: number, t = 0.025) {
-    return new Promise(() => {
+    return new Promise((resolve) => {
       TweenLite.to(flashValue, t, {
         v: to,
-        ease: Quint.easeOut,
+        ease: 'power1.out',
         onUpdate: () => {
           generateTextures(baseFg, baseBg)
           generateTextures(flashFg, flashBg, flashValue.v)
           renderer.updateTextures()
+        },
+        onComplete: () => {
+          resolve(null)
         }
       })
     })
@@ -342,4 +344,4 @@ const generateTextures = (
   textureBgCtx.drawImage(bg, 0, 0, textureBgSize.width, textureBgSize.height)
 }
 
-export default initializer
+export { initializer, updateWeather }
