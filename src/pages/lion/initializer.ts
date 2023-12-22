@@ -18,14 +18,14 @@ let scene: THREE.Scene,
 //SCENE
 let floor: THREE.Mesh,
   lion: Lion,
-  fan,
+  fan: Fan,
   isBlowing = false
 
 //SCREEN VARIABLES
 let HEIGHT,
   WIDTH,
-  windowHalfX,
-  windowHalfY,
+  windowHalfX: number,
+  windowHalfY: number,
   mousePos = { x: 0, y: 0 },
   dist = 0
 
@@ -57,6 +57,7 @@ const init = (target: HTMLDivElement) => {
   windowHalfY = HEIGHT / 2
 
   window.addEventListener('resize', onWindowResize, false)
+  document.addEventListener('mousemove', handleMouseMove, false)
 }
 
 const onWindowResize = () => {
@@ -67,6 +68,10 @@ const onWindowResize = () => {
   renderer.setSize(WIDTH, HEIGHT)
   camera.aspect = WIDTH / HEIGHT
   camera.updateProjectionMatrix()
+}
+
+const handleMouseMove = (event: MouseEvent) => {
+  mousePos = { x: event.clientX, y: event.clientY }
 }
 
 const createLights = () => {
@@ -110,6 +115,11 @@ const createFan = () => {
 
 const loop = () => {
   render()
+  const xTarget = mousePos.x - windowHalfX
+  const yTarget = mousePos.y - windowHalfY
+
+  fan.isBlowing = isBlowing
+  fan.update(xTarget, yTarget)
 
   requestAnimationFrame(loop)
 }

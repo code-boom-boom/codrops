@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { rule3 } from './Helpers'
 
 export default class Fan {
   isBlowing = false
@@ -11,6 +12,9 @@ export default class Fan {
   propeller: THREE.Group
   sphere: THREE.Mesh
   threegroup: THREE.Group
+  tPosX = 0
+  tPosY = 0
+  targetSpeed = 0
 
   constructor() {
     this.redMat = new THREE.MeshLambertMaterial({
@@ -61,5 +65,24 @@ export default class Fan {
     this.threegroup.add(this.core)
     this.threegroup.add(this.propeller)
     this.threegroup.add(this.sphere)
+  }
+
+  update(xTarget: number, yTarget: number) {
+    this.threegroup.lookAt(new THREE.Vector3(0, 80, 60))
+    this.tPosX = rule3(xTarget, -200, 200, -250, 250)
+    this.tPosY = rule3(yTarget, -200, 200, 250, -250)
+
+    this.threegroup.position.x += (this.tPosX - this.threegroup.position.x) / 10
+    this.threegroup.position.y += (this.tPosY - this.threegroup.position.y) / 10
+
+    this.targetSpeed = this.isBlowing ? 0.3 : 0.01
+    if (this.isBlowing && this.speed < 0.5) {
+      this.acc += 0.001
+      this.speed += this.acc
+    } else if (!this.isBlowing) {
+      this.acc = 0
+      this.speed *= 0.98
+    }
+    this.propeller.rotation.z += this.speed
   }
 }
