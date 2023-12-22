@@ -58,6 +58,11 @@ const init = (target: HTMLDivElement) => {
 
   window.addEventListener('resize', onWindowResize, false)
   document.addEventListener('mousemove', handleMouseMove, false)
+  document.addEventListener('mousedown', handleMouseDown, false)
+  document.addEventListener('mouseup', handleMouseUp, false)
+  document.addEventListener('touchstart', handleTouchStart, false)
+  document.addEventListener('touchmove', handleTouchMove, false)
+  document.addEventListener('touchend', handleTouchEnd, false)
 }
 
 const onWindowResize = () => {
@@ -72,6 +77,34 @@ const onWindowResize = () => {
 
 const handleMouseMove = (event: MouseEvent) => {
   mousePos = { x: event.clientX, y: event.clientY }
+}
+
+const handleMouseDown = () => {
+  isBlowing = true
+}
+
+const handleMouseUp = () => {
+  isBlowing = false
+}
+
+const handleTouchStart = (event: TouchEvent) => {
+  if (event.touches.length > 1) {
+    event.preventDefault()
+    mousePos = { x: event.touches[0].pageX, y: event.touches[0].pageY }
+    isBlowing = true
+  }
+}
+
+const handleTouchEnd = () => {
+  isBlowing = false
+}
+
+const handleTouchMove = (event: TouchEvent) => {
+  if (event.touches.length == 1) {
+    event.preventDefault()
+    mousePos = { x: event.touches[0].pageX, y: event.touches[0].pageY }
+    isBlowing = true
+  }
 }
 
 const createLights = () => {
