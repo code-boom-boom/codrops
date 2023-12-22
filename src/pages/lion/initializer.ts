@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import Lion from './Lion'
+import Fan from './Fan'
 
 let scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
@@ -89,6 +90,12 @@ const createLion = () => {
   scene.add(lion.threegroup)
 }
 
+const createFan = () => {
+  fan = new Fan()
+  fan.threegroup.position.z = 350
+  scene.add(fan.threegroup)
+}
+
 const loop = () => {
   render()
 }
@@ -102,6 +109,7 @@ const initialize = (target: HTMLDivElement) => {
   createLights()
   createFloor()
   createLion()
+  createFan()
   loop()
 }
 
