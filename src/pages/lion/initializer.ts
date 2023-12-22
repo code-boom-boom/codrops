@@ -4,7 +4,6 @@ import Fan from './Fan'
 
 let scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
-  controls,
   fieldOfView,
   aspectRatio,
   nearPlane,
@@ -26,8 +25,7 @@ let HEIGHT,
   WIDTH,
   windowHalfX: number,
   windowHalfY: number,
-  mousePos = { x: 0, y: 0 },
-  dist = 0
+  mousePos = { x: 0, y: 0 }
 
 const init = (target: HTMLDivElement) => {
   container = target
@@ -153,6 +151,11 @@ const loop = () => {
 
   fan.isBlowing = isBlowing
   fan.update(xTarget, yTarget)
+  if (isBlowing) {
+    lion.cool(xTarget, yTarget)
+  } else {
+    lion.look(xTarget, yTarget)
+  }
 
   requestAnimationFrame(loop)
 }

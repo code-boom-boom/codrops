@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { rule3 } from './Helpers'
 
 export default class Lion {
   windTime
@@ -55,6 +56,26 @@ export default class Lion {
   nose: THREE.Mesh
   head: THREE.Group
   bodyVertices: number[]
+  tHeadRotX = 0
+  tHeadRotY = 0
+  tHeadPosX = 0
+  tHeadPosY = 0
+  tHeadPosZ = 0
+  tEyeScale = 1
+  tIrisYScale = 1
+  tIrisZScale = 1
+  tIrisPosY = 0
+  tLeftIrisPosZ = 0
+  tRightIrisPosZ = 0
+  tLipsPosX = 0
+  tLipsPosY = 0
+  tSmilePosX = 0
+  tSmilePosY = 0
+  tSmilePosZ = 0
+  tSmileRotZ = 0
+  tMouthPosZ = 0
+  tRightKneeRotZ = 0
+  tLeftKneeRotZ = 0
 
   constructor() {
     this.windTime = 0
@@ -413,5 +434,192 @@ export default class Lion {
         object.receiveShadow = true
       }
     })
+  }
+
+  look(xTarget: number, yTarget: number) {
+    let m
+    let i
+    this.tHeadRotY = rule3(xTarget, -200, 200, -Math.PI / 4, Math.PI / 4)
+    this.tHeadRotX = rule3(yTarget, -200, 200, -Math.PI / 4, Math.PI / 4)
+    this.tHeadPosX = rule3(xTarget, -200, 200, 70, -70)
+    this.tHeadPosY = rule3(yTarget, -140, 260, 20, 100)
+    this.tHeadPosZ = 0
+
+    this.tEyeScale = 1
+    this.tIrisYScale = 1
+    this.tIrisZScale = 1
+    this.tIrisPosY = rule3(yTarget, -200, 200, 35, 15)
+    this.tLeftIrisPosZ = rule3(xTarget, -200, 200, 130, 110)
+    this.tRightIrisPosZ = rule3(xTarget, -200, 200, 110, 130)
+
+    this.tLipsPosX = 0
+    this.tLipsPosY = -45
+
+    this.tSmilePosX = 0
+    this.tMouthPosZ = 174
+    this.tSmilePosZ = 173
+    this.tSmilePosY = -15
+    this.tSmileRotZ = -Math.PI
+
+    this.tRightKneeRotZ = rule3(
+      xTarget,
+      -200,
+      200,
+      0.3 - Math.PI / 8,
+      0.3 + Math.PI / 8
+    )
+    this.tLeftKneeRotZ = rule3(
+      xTarget,
+      -200,
+      200,
+      -0.3 - Math.PI / 8,
+      -0.3 + Math.PI / 8
+    )
+
+    this.updateBody(10)
+
+    this.mane.rotation.y = 0
+    this.mane.rotation.x = 0
+
+    for (i = 0; i < this.maneParts.length; i++) {
+      m = this.maneParts[i].mesh
+      m.position.z = 0
+      m.rotation.y = 0
+    }
+
+    for (i = 0; i < this.mustaches.length; i++) {
+      m = this.mustaches[i]
+      m.rotation.y = 0
+    }
+
+    for (i = 0; i < this.bodyVertices.length; i++) {
+      const tvInit = this.bodyInitPositions[i]
+      const vertexIndex = this.bodyVertices[i]
+
+      const positions = this.body.geometry.attributes.position
+      positions.array[vertexIndex * 3] = tvInit.x + this.head.position.x
+    }
+    this.body.geometry.attributes.position.needsUpdate = true
+  }
+
+  cool(xTarget: number, yTarget: number) {
+    let amp
+    let m
+    let i
+    this.tHeadRotY = rule3(xTarget, -200, 200, Math.PI / 4, -Math.PI / 4)
+    this.tHeadRotX = rule3(yTarget, -200, 200, Math.PI / 4, -Math.PI / 4)
+    this.tHeadPosX = rule3(xTarget, -200, 200, -70, 70)
+    this.tHeadPosY = rule3(yTarget, -140, 260, 100, 20)
+    this.tHeadPosZ = 100
+
+    this.tEyeScale = 0.1
+    this.tIrisYScale = 0.1
+    this.tIrisZScale = 3
+
+    this.tIrisPosY = 20
+    this.tLeftIrisPosZ = 120
+    this.tRightIrisPosZ = 120
+
+    this.tLipsPosX = rule3(xTarget, -200, 200, -15, 15)
+    this.tLipsPosY = rule3(yTarget, -200, 200, -45, -40)
+
+    this.tMouthPosZ = 168
+    this.tSmilePosX = rule3(xTarget, -200, 200, -15, 15)
+    this.tSmilePosY = rule3(yTarget, -200, 200, -20, -8)
+    this.tSmilePosZ = 176
+    this.tSmileRotZ = rule3(xTarget, -200, 200, -Math.PI - 0.3, -Math.PI + 0.3)
+
+    this.tRightKneeRotZ = rule3(
+      xTarget,
+      -200,
+      200,
+      0.3 + Math.PI / 8,
+      0.3 - Math.PI / 8
+    )
+    this.tLeftKneeRotZ = rule3(
+      xTarget,
+      -200,
+      200,
+      -0.3 + Math.PI / 8,
+      -0.3 - Math.PI / 8
+    )
+
+    this.updateBody(10)
+
+    this.mane.rotation.y = -0.8 * this.head.rotation.y
+    this.mane.rotation.x = -0.8 * this.head.rotation.x
+
+    let dt = 20000 / (xTarget * xTarget + yTarget * yTarget)
+    dt = Math.max(Math.min(dt, 1), 0.5)
+    this.windTime += dt
+
+    for (i = 0; i < this.maneParts.length; i++) {
+      m = this.maneParts[i].mesh
+      amp = this.maneParts[i].amp
+      const zOffset = this.maneParts[i].zOffset
+      const periodOffset = this.maneParts[i].periodOffset
+
+      m.position.z =
+        zOffset + Math.sin(this.windTime + periodOffset) * amp * dt * 2
+    }
+
+    this.leftEar.rotation.x = ((Math.cos(this.windTime) * Math.PI) / 16) * dt
+    this.rightEar.rotation.x = ((-Math.cos(this.windTime) * Math.PI) / 16) * dt
+
+    for (i = 0; i < this.mustaches.length; i++) {
+      m = this.mustaches[i]
+      amp = i < 3 ? -Math.PI / 8 : Math.PI / 8
+      m.rotation.y = amp + Math.cos(this.windTime + i) * dt * amp
+    }
+
+    for (i = 0; i < this.bodyVertices.length; i++) {
+      const tvInit = this.bodyInitPositions[i]
+      const vertexIndex = this.bodyVertices[i]
+
+      const positions = this.body.geometry.attributes.position
+      positions.array[vertexIndex * 3] = tvInit.x + this.head.position.x
+    }
+    this.body.geometry.attributes.position.needsUpdate = true
+  }
+
+  updateBody(speed: number) {
+    this.head.rotation.y += (this.tHeadRotY - this.head.rotation.y) / speed
+    this.head.rotation.x += (this.tHeadRotX - this.head.rotation.x) / speed
+    this.head.position.x += (this.tHeadPosX - this.head.position.x) / speed
+    this.head.position.y += (this.tHeadPosY - this.head.position.y) / speed
+    this.head.position.z += (this.tHeadPosZ - this.head.position.z) / speed
+
+    this.leftEye.scale.y +=
+      (this.tEyeScale - this.leftEye.scale.y) / (speed * 2)
+    this.rightEye.scale.y = this.leftEye.scale.y
+
+    this.leftIris.scale.y +=
+      (this.tIrisYScale - this.leftIris.scale.y) / (speed * 2)
+    this.rightIris.scale.y = this.leftIris.scale.y
+
+    this.leftIris.scale.z +=
+      (this.tIrisZScale - this.leftIris.scale.z) / (speed * 2)
+    this.rightIris.scale.z = this.leftIris.scale.z
+
+    this.leftIris.position.y +=
+      (this.tIrisPosY - this.leftIris.position.y) / speed
+    this.rightIris.position.y = this.leftIris.position.y
+    this.leftIris.position.z +=
+      (this.tLeftIrisPosZ - this.leftIris.position.z) / speed
+    this.rightIris.position.z +=
+      (this.tRightIrisPosZ - this.rightIris.position.z) / speed
+
+    this.rightKnee.rotation.z +=
+      (this.tRightKneeRotZ - this.rightKnee.rotation.z) / speed
+    this.leftKnee.rotation.z +=
+      (this.tLeftKneeRotZ - this.leftKnee.rotation.z) / speed
+
+    this.lips.position.x += (this.tLipsPosX - this.lips.position.x) / speed
+    this.lips.position.y += (this.tLipsPosY - this.lips.position.y) / speed
+    this.smile.position.x += (this.tSmilePosX - this.smile.position.x) / speed
+    this.mouth.position.z += (this.tMouthPosZ - this.mouth.position.z) / speed
+    this.smile.position.z += (this.tSmilePosZ - this.smile.position.z) / speed
+    this.smile.position.y += (this.tSmilePosY - this.smile.position.y) / speed
+    this.smile.rotation.z += (this.tSmileRotZ - this.smile.rotation.z) / speed
   }
 }
