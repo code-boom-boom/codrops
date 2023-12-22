@@ -55,6 +55,18 @@ const init = (target: HTMLDivElement) => {
   container.appendChild(renderer.domElement)
   windowHalfX = WIDTH / 2
   windowHalfY = HEIGHT / 2
+
+  window.addEventListener('resize', onWindowResize, false)
+}
+
+const onWindowResize = () => {
+  HEIGHT = window.innerHeight
+  WIDTH = window.innerWidth
+  windowHalfX = WIDTH / 2
+  windowHalfY = HEIGHT / 2
+  renderer.setSize(WIDTH, HEIGHT)
+  camera.aspect = WIDTH / HEIGHT
+  camera.updateProjectionMatrix()
 }
 
 const createLights = () => {
@@ -98,6 +110,8 @@ const createFan = () => {
 
 const loop = () => {
   render()
+
+  requestAnimationFrame(loop)
 }
 
 const render = () => {
