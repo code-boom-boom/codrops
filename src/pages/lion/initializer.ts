@@ -106,9 +106,9 @@ const handleTouchMove = (event: TouchEvent) => {
 }
 
 const createLights = () => {
-  light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5)
+  light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.8)
 
-  shadowLight = new THREE.DirectionalLight(0xffffff, 0.8)
+  shadowLight = new THREE.DirectionalLight(0xffffff, 1)
   shadowLight.position.set(200, 200, 200)
   shadowLight.castShadow = true
 

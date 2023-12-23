@@ -138,6 +138,8 @@ export default class Lion {
     this.body.name = 'Body'
     this.body.position.z = -60
     this.body.position.y = -30
+    this.body.castShadow = true
+    this.body.receiveShadow = true
     this.bodyVertices = [0, 1, 2, 3, 4, 10]
 
     const positions = this.body.geometry.attributes.position
@@ -162,6 +164,7 @@ export default class Lion {
     // knee
     this.leftKnee = new THREE.Mesh(kneeGeom, this.yellowMat)
     this.leftKnee.name = 'Left Knee'
+    this.leftKnee.castShadow = true
     this.leftKnee.position.x = 65
     this.leftKnee.position.z = -20
     this.leftKnee.position.y = -110
@@ -169,6 +172,7 @@ export default class Lion {
 
     this.rightKnee = new THREE.Mesh(kneeGeom, this.yellowMat)
     this.rightKnee.name = 'Right Knee'
+    this.rightKnee.castShadow = true
     this.rightKnee.position.x = -65
     this.rightKnee.position.z = -20
     this.rightKnee.position.y = -110
@@ -177,24 +181,28 @@ export default class Lion {
     // feet
     this.backLeftFoot = new THREE.Mesh(footGeom, this.yellowMat)
     this.backLeftFoot.name = 'Back Left Foot'
+    this.backLeftFoot.castShadow = true
     this.backLeftFoot.position.z = 30
     this.backLeftFoot.position.x = 75
     this.backLeftFoot.position.y = -90
 
     this.backRightFoot = new THREE.Mesh(footGeom, this.yellowMat)
     this.backRightFoot.name = 'Back Right Foot'
+    this.backRightFoot.castShadow = true
     this.backRightFoot.position.z = 30
     this.backRightFoot.position.x = -75
     this.backRightFoot.position.y = -90
 
     this.frontRightFoot = new THREE.Mesh(footGeom, this.yellowMat)
     this.frontRightFoot.name = 'Front Right Foot'
+    this.frontRightFoot.castShadow = true
     this.frontRightFoot.position.z = 40
     this.frontRightFoot.position.x = -22
     this.frontRightFoot.position.y = -90
 
     this.frontLeftFoot = new THREE.Mesh(footGeom, this.yellowMat)
     this.frontLeftFoot.name = 'Front Left Foot'
+    this.frontLeftFoot.castShadow = true
     this.frontLeftFoot.position.z = 40
     this.frontLeftFoot.position.x = 22
     this.frontLeftFoot.position.y = -90
@@ -206,6 +214,8 @@ export default class Lion {
     for (let j = 0; j < 4; j++) {
       for (let k = 0; k < 4; k++) {
         const manePart = new THREE.Mesh(maneGeom, this.redMat)
+        manePart.castShadow = true
+        manePart.receiveShadow = true
         manePart.name = `Mane Part: ${j}, ${k}`
         manePart.position.x = j * 40 - 60
         manePart.position.y = k * 40 - 60
@@ -247,6 +257,8 @@ export default class Lion {
     // face
     this.face = new THREE.Mesh(faceGeom, this.yellowMat)
     this.face.name = 'Face'
+    this.face.castShadow = true
+    this.face.receiveShadow = true
     this.face.position.z = 135
 
     // Mustaches
@@ -254,27 +266,33 @@ export default class Lion {
 
     this.mustache1 = new THREE.Mesh(mustacheGeom, this.greyMat)
     this.mustache1.name = 'Mustache 1'
+    this.mustache1.castShadow = true
     this.mustache1.position.x = 30
     this.mustache1.position.y = -5
     this.mustache1.position.z = 175
     this.mustache2 = this.mustache1.clone()
     this.mustache2.name = 'Mustache 2'
+    this.mustache2.castShadow = true
     this.mustache2.position.x = 35
     this.mustache2.position.y = -12
     this.mustache3 = this.mustache1.clone()
     this.mustache3.name = 'Mustache 3'
+    this.mustache3.castShadow = true
     this.mustache3.position.y = -19
     this.mustache3.position.x = 30
     this.mustache4 = this.mustache1.clone()
     this.mustache4.name = 'Mustache 4'
+    this.mustache4.castShadow = true
     this.mustache4.rotation.z = Math.PI
     this.mustache4.position.x = -30
     this.mustache5 = this.mustache2.clone()
     this.mustache5.name = 'Mustache 5'
+    this.mustache5.castShadow = true
     this.mustache5.rotation.z = Math.PI
     this.mustache5.position.x = -35
     this.mustache6 = this.mustache3.clone()
     this.mustache6.name = 'Mustache 6'
+    this.mustache6.castShadow = true
     this.mustache6.rotation.z = Math.PI
     this.mustache6.position.x = -30
 
