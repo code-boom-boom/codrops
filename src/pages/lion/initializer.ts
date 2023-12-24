@@ -50,6 +50,7 @@ const init = (target: HTMLDivElement) => {
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(WIDTH, HEIGHT)
   renderer.shadowMap.enabled = true
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap
   container.appendChild(renderer.domElement)
   windowHalfX = WIDTH / 2
   windowHalfY = HEIGHT / 2
@@ -106,15 +107,23 @@ const handleTouchMove = (event: TouchEvent) => {
 }
 
 const createLights = () => {
-  light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.8)
+  light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5)
 
-  shadowLight = new THREE.DirectionalLight(0xffffff, 1)
+  shadowLight = new THREE.DirectionalLight(0xffffff, 0.8)
   shadowLight.position.set(200, 200, 200)
   shadowLight.castShadow = true
+  shadowLight.shadow.mapSize.width = 512
+  shadowLight.shadow.mapSize.height = 512
+  shadowLight.shadow.camera.near = 0.5
+  shadowLight.shadow.camera.far = 500
 
   backLight = new THREE.DirectionalLight(0xffffff, 0.4)
   backLight.position.set(-100, 200, 50)
   backLight.castShadow = true
+  backLight.shadow.mapSize.width = 512
+  backLight.shadow.mapSize.height = 512
+  backLight.shadow.camera.near = 0.5
+  backLight.shadow.camera.far = 500
 
   scene.add(backLight)
   scene.add(light)

@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import RainDrop from './pages/raindrop'
+import routes from './routes'
+import HomePage from './pages'
 import LionPage from './pages/lion'
 
 function App() {
@@ -7,7 +8,14 @@ function App() {
     <div className="relative h-screen w-screen overflow-hidden bg-white">
       <BrowserRouter>
         <Routes>
-          <Route path="/rain-drop" element={<RainDrop />} />
+          <Route path="/" element={<HomePage />} />
+          {routes.map((route) => (
+            <Route
+              key={`path-${route.path}`}
+              path={route.path}
+              element={<route.pageComponent />}
+            />
+          ))}
           <Route path="/lion" element={<LionPage />} />
         </Routes>
       </BrowserRouter>
