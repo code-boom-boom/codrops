@@ -1,5 +1,6 @@
-import RainDrop from '../pages/raindrop'
+import RainDrop from '../pages/rain-drop'
 import LionPage from '../pages/lion'
+import CuteBirdPage from '../pages/cute-bird'
 
 const routes = [
   {
@@ -11,6 +12,11 @@ const routes = [
     path: '/lion',
     pageComponent: LionPage,
     label: 'Chilling Lion'
+  },
+  {
+    path: '/cute-bird',
+    pageComponent: CuteBirdPage,
+    label: 'Cute Bird'
   }
 ]
 

@@ -21,27 +21,27 @@ const weathers: Array<weatherType> = [
   {
     type: 'rain',
     icon: IoRainyOutline,
-    sound: 'assets/raindrop/sound/rain.mp3'
+    sound: 'assets/rain-drop/sound/rain.mp3'
   },
   {
     type: 'drizzle',
     icon: BsCloudDrizzle,
-    sound: 'assets/raindrop/sound/rain.mp3'
+    sound: 'assets/rain-drop/sound/rain.mp3'
   },
   {
     type: 'storm',
     icon: IoThunderstormOutline,
-    sound: 'assets/raindrop/sound/thunder.mp3'
+    sound: 'assets/rain-drop/sound/thunder.mp3'
   },
   {
     type: 'sunny',
     icon: IoSunnyOutline,
-    sound: 'assets/raindrop/sound/sunny.mp3'
+    sound: 'assets/rain-drop/sound/sunny.mp3'
   },
   {
     type: 'fallout',
     icon: GiNuclear,
-    sound: 'assets/raindrop/sound/rain.mp3'
+    sound: 'assets/rain-drop/sound/rain.mp3'
   }
 ]
 
