@@ -84,36 +84,36 @@ export default class Lion {
     this.threegroup = new THREE.Group()
     this.yellowMat = new THREE.MeshLambertMaterial({
       color: 0xfdd276,
-      flatShading: true
+      shading: THREE.FlatShading
     })
     this.redMat = new THREE.MeshLambertMaterial({
       color: 0xad3525,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     this.pinkMat = new THREE.MeshLambertMaterial({
       color: 0xe55d2b,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     this.whiteMat = new THREE.MeshLambertMaterial({
       color: 0xffffff,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     this.purpleMat = new THREE.MeshLambertMaterial({
       color: 0x451954,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     this.greyMat = new THREE.MeshLambertMaterial({
       color: 0x653f4c,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     this.blackMat = new THREE.MeshLambertMaterial({
       color: 0x302925,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     const bodyGem = new THREE.CylinderGeometry(30, 80, 140, 4)
@@ -121,7 +121,7 @@ export default class Lion {
     const faceGeom = new THREE.BoxGeometry(80, 80, 80)
     const spotGeom = new THREE.BoxGeometry(4, 4, 4)
     const mustacheGeom = new THREE.BoxGeometry(30, 2, 1)
-    mustacheGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(15, 0, 0))
+    mustacheGeom.applyMatrix(new THREE.Matrix4().makeTranslation(15, 0, 0))
 
     const earGeom = new THREE.BoxGeometry(20, 20, 20)
     const noseGeom = new THREE.BoxGeometry(40, 40, 20)
@@ -131,7 +131,7 @@ export default class Lion {
     const smileGeom = new THREE.TorusGeometry(12, 4, 2, 10, Math.PI)
     const lipsGeom = new THREE.BoxGeometry(40, 15, 20)
     const kneeGeom = new THREE.BoxGeometry(25, 80, 80)
-    kneeGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 50, 0))
+    kneeGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 50, 0))
     const footGeom = new THREE.BoxGeometry(40, 20, 20)
 
     this.body = new THREE.Mesh(bodyGem, this.yellowMat)
@@ -142,24 +142,11 @@ export default class Lion {
     this.body.receiveShadow = true
     this.bodyVertices = [0, 1, 2, 3, 4, 10]
 
-    const positions = this.body.geometry.attributes.position
-
     for (let i = 0; i < this.bodyVertices.length; i++) {
-      const idx = this.bodyVertices[i]
-
-      // Each vertex consists of 3 values (x, y, z)
-      const vx = positions.array[idx * 3]
-      const vy = positions.array[idx * 3 + 1]
-      const vz = positions.array[idx * 3 + 2]
-
-      // Modify z position
-      positions.array[idx * 3 + 2] = 70
-
-      // Store initial positions
-      this.bodyInitPositions.push({ x: vx, y: vy, z: vz })
+      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      tv.z = 70
+      this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z })
     }
-
-    positions.needsUpdate = true
 
     // knee
     this.leftKnee = new THREE.Mesh(kneeGeom, this.yellowMat)
@@ -512,12 +499,10 @@ export default class Lion {
 
     for (i = 0; i < this.bodyVertices.length; i++) {
       const tvInit = this.bodyInitPositions[i]
-      const vertexIndex = this.bodyVertices[i]
-
-      const positions = this.body.geometry.attributes.position
-      positions.array[vertexIndex * 3] = tvInit.x + this.head.position.x
+      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      tv.x = tvInit.x + this.head.position.x
     }
-    this.body.geometry.attributes.position.needsUpdate = true
+    (this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
   }
 
   cool(xTarget: number, yTarget: number) {
@@ -592,12 +577,10 @@ export default class Lion {
 
     for (i = 0; i < this.bodyVertices.length; i++) {
       const tvInit = this.bodyInitPositions[i]
-      const vertexIndex = this.bodyVertices[i]
-
-      const positions = this.body.geometry.attributes.position
-      positions.array[vertexIndex * 3] = tvInit.x + this.head.position.x
+      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      tv.x = tvInit.x + this.head.position.x
     }
-    this.body.geometry.attributes.position.needsUpdate = true
+    (this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
   }
 
   updateBody(speed: number) {

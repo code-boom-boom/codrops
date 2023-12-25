@@ -56,6 +56,34 @@ const init = (target: HTMLDivElement) => {
   windowHalfY = HEIGHT / 2
 }
 
+const createLights = () => {
+  light = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5)
+
+  shadowLight = new THREE.DirectionalLight(0xffffff, 0.8)
+  shadowLight.position.set(200, 200, 200)
+  shadowLight.castShadow = true
+
+  backLight = new THREE.DirectionalLight(0xffffff, 0.4)
+  backLight.position.set(-100, 200, 50)
+  backLight.castShadow = true
+
+  scene.add(light)
+  scene.add(shadowLight)
+  scene.add(backLight)
+}
+
+const createFloor = () => {
+  floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), new THREE.MeshBasicMaterial({ color: 0xe0dacd }))
+  floor.rotation.x = -Math.PI / 2
+  floor.position.y = -33
+  floor.receiveShadow = true
+  scene.add(floor)
+}
+
+const createBirds = () => {
+  
+}
+
 const loop = () => {
   render()
 }
@@ -66,6 +94,9 @@ const render = () => {
 
 const initializer = (target: HTMLDivElement) => {
   init(target)
+  createLights()
+  createFloor()
+  createBirds()
   loop()
 }
 

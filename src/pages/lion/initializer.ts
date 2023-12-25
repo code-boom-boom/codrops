@@ -49,8 +49,7 @@ const init = (target: HTMLDivElement) => {
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(WIDTH, HEIGHT)
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  renderer.shadowMapEnabled = true
   container.appendChild(renderer.domElement)
   windowHalfX = WIDTH / 2
   windowHalfY = HEIGHT / 2
@@ -112,18 +111,12 @@ const createLights = () => {
   shadowLight = new THREE.DirectionalLight(0xffffff, 0.8)
   shadowLight.position.set(200, 200, 200)
   shadowLight.castShadow = true
-  shadowLight.shadow.mapSize.width = 512
-  shadowLight.shadow.mapSize.height = 512
-  shadowLight.shadow.camera.near = 0.5
-  shadowLight.shadow.camera.far = 500
+  shadowLight.shadowDarkness = 0.1
 
   backLight = new THREE.DirectionalLight(0xffffff, 0.4)
   backLight.position.set(-100, 200, 50)
   backLight.castShadow = true
-  backLight.shadow.mapSize.width = 512
-  backLight.shadow.mapSize.height = 512
-  backLight.shadow.camera.near = 0.5
-  backLight.shadow.camera.far = 500
+  backLight.shadowDarkness = 0.1
 
   scene.add(backLight)
   scene.add(light)
@@ -132,7 +125,7 @@ const createLights = () => {
 
 const createFloor = () => {
   floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(1000, 500),
+    new THREE.PlaneBufferGeometry(1000, 500),
     new THREE.MeshBasicMaterial({ color: 0xebe5e7 })
   )
   floor.rotation.x = -Math.PI / 2

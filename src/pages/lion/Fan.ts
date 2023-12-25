@@ -19,21 +19,21 @@ export default class Fan {
   constructor() {
     this.redMat = new THREE.MeshLambertMaterial({
       color: 0xad3525,
-      flatShading: true
+      shading: THREE.FlatShading
     })
     this.greyMat = new THREE.MeshLambertMaterial({
       color: 0x653f4c,
-      flatShading: true
+      shading: THREE.FlatShading
     })
     this.yellowMat = new THREE.MeshLambertMaterial({
       color: 0xfdd276,
-      flatShading: true
+      shading: THREE.FlatShading
     })
 
     const coreGeom = new THREE.BoxGeometry(10, 10, 20)
     const sphereGeom = new THREE.BoxGeometry(10, 10, 3)
     const propGeom = new THREE.BoxGeometry(10, 30, 2)
-    propGeom.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 25, 0))
+    propGeom.applyMatrix(new THREE.Matrix4().makeTranslation(0, 25, 0))
 
     this.core = new THREE.Mesh(coreGeom, this.greyMat)
     this.core.name = 'Core'
