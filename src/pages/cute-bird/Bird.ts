@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { Strong, TweenMax } from 'gsap'
 
 interface SkinType {
   r: number
@@ -6,15 +7,15 @@ interface SkinType {
   b: number
 }
 
-interface AngleType {
-  h: number
-  v: number
-}
-
 interface VectorType {
   x: number
   y: number
   z: number
+}
+
+interface AngleType {
+  h: number
+  v: number
 }
 
 export default class Bird {
@@ -33,7 +34,11 @@ export default class Bird {
   }
   side = 'left'
   shyAngles: AngleType = { h: 0, v: 0 }
-  // behaviourInterval
+  behaviourInterval:
+    | ReturnType<typeof setInterval>
+    | string
+    | number
+    | undefined
   intervalRunning: boolean = false
   threegroup: THREE.Group
   yellowMat: THREE.MeshLambertMaterial
@@ -190,5 +195,109 @@ export default class Bird {
         object.receiveShadow = true
       }
     })
+  }
+
+  look(hAngle: number, vAngle: number) {
+    this.hAngle = hAngle
+    this.vAngle = vAngle
+
+    this.leftIris.position.y = 120 - this.vAngle * 30
+    this.leftIris.position.x = -30 + this.hAngle * 10
+    this.leftIris.position.z = 40 + this.hAngle * 10
+
+    this.rightIris.position.y = 120 - this.vAngle * 30
+    this.rightIris.position.x = 30 + this.hAngle * 10
+    this.rightIris.position.z = 40 - this.hAngle * 10
+
+    this.leftEye.position.y = this.rightEye.position.y = 120 - this.vAngle * 10
+
+    this.beak.position.y = 70 - this.vAngle * 20
+    this.beak.rotation.x = Math.PI / 2 + this.vAngle / 3
+
+    this.feather1.rotation.x = Math.PI / 4 + this.vAngle / 2
+    this.feather1.position.y = 185 - this.vAngle * 10
+    this.feather1.position.z = 55 + this.vAngle * 10
+
+    this.feather2.rotation.x = Math.PI / 4 + this.vAngle / 2
+    this.feather2.position.y = 180 - this.vAngle * 10
+    this.feather2.position.z = 50 + this.vAngle * 10
+
+    this.feather3.rotation.x = Math.PI / 4 + this.vAngle / 2
+    this.feather3.position.y = 180 - this.vAngle * 10
+    this.feather3.position.z = 50 + this.vAngle * 10
+
+    for (let i = 0; i < this.bodyVerticesLength; i++) {
+      const line = Math.floor(i / (this.rSegments + 1))
+      const tv = (this.bodyBird.geometry as THREE.Geometry).vertices[i]
+      const tvInitPos = this.bodyBirdInitPositions[i]
+      let a
+      if (line >= this.hSegments - 1) {
+        a = 0
+      } else {
+        a = this.hAngle / (line + 1)
+      }
+      const tx = tvInitPos.x * Math.cos(a) + tvInitPos.z * Math.sin(a)
+      const tz = -tvInitPos.x * Math.sin(a) + tvInitPos.z * Math.cos(a)
+      tv.x = tx
+      tv.z = tz
+    }
+    this.face.rotation.y = this.hAngle
+    ;(this.bodyBird.geometry as THREE.Geometry).verticesNeedUpdate = true
+  }
+
+  lookAway(fastMove: boolean) {
+    let th
+    const speed = fastMove ? 0.4 : 2
+    const ease = fastMove ? Strong.easeOut : Strong.easeInOut
+    const delay = fastMove ? 0.2 : 0
+    const col = fastMove ? this.shySkin : this.normalSkin
+    const tv = ((-1 + Math.random() * 2) * Math.PI) / 3
+    const beakScaleX = 0.75 + Math.random() * 0.25
+    const beakScaleZ = 0.5 + Math.random() * 0.5
+
+    if (this.side == 'right') {
+      th = ((-1 + Math.random()) * Math.PI) / 4
+    } else {
+      th = (Math.random() * Math.PI) / 4
+    }
+
+    TweenMax.killTweensOf(this.shyAngles)
+    TweenMax.to(this.shyAngles, speed, {
+      v: tv,
+      h: th,
+      ease: ease,
+      delay: delay
+    })
+    TweenMax.to(this.color, speed, {
+      r: col.r,
+      g: col.g,
+      b: col.b,
+      ease: ease,
+      delay: delay
+    })
+    TweenMax.to(this.beak.scale, speed, {
+      z: beakScaleZ,
+      x: beakScaleX,
+      ease: ease,
+      delay: delay
+    })
+  }
+
+  stare() {
+    let th
+    const col = this.normalSkin
+    if (this.side == 'right') {
+      th = Math.PI / 3
+    } else {
+      th = -Math.PI / 3
+    }
+    TweenMax.to(this.shyAngles, 2, { v: -0.5, h: th, ease: Strong.easeInOut })
+    TweenMax.to(this.color, 2, {
+      r: col.r,
+      g: col.g,
+      b: col.b,
+      ease: Strong.easeInOut
+    })
+    TweenMax.to(this.beak.scale, 2, { z: 0.8, x: 1.5, ease: Strong.easeInOut })
   }
 }

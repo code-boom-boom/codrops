@@ -9,8 +9,8 @@ dependencies:
     specifier: ^2.3.2
     version: 2.3.2
   gsap:
-    specifier: ^3.12.4
-    version: 3.12.4
+    specifier: ^1.16.1
+    version: 1.16.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -2075,8 +2075,8 @@ packages:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
     dev: true
 
-  /gsap@3.12.4:
-    resolution: {integrity: sha512-1ByAq8dD0W4aBZ/JArgaQvc0gyUfkGkP8mgAQa0qZGdpOKlSOhOf+WNXjoLimKaKG3Z4Iu6DKZtnyszqQeyqWQ==}
+  /gsap@1.16.1:
+    resolution: {integrity: sha512-OKbic5jx3FL2rNSJS613zmvAhpGt6e5hTIHYgS9lMrWvk0Pd+grkYKkqyy6mM6b4ijAyxizfdbLWYjjBOx8ONA==}
     dev: false
 
   /happy-dom@12.10.3:

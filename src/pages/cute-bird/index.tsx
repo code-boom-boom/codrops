@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useRef } from 'react'
-import initialize from './initializer'
+import { initializer, unmount } from './initializer'
 
 function CuteBirdPage(): ReactElement {
   const mountRef = useRef<HTMLDivElement>(null)
@@ -11,7 +11,11 @@ function CuteBirdPage(): ReactElement {
       return
     }
 
-    initialize(container)
+    initializer(container)
+
+    return () => {
+      unmount()
+    }
   }, [])
   return (
     <div className="relative h-full w-full">

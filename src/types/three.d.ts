@@ -2653,6 +2653,8 @@ declare namespace THREE {
     blendDstAlpha: number
     blendEquationAlpha: number
 
+    color: Color
+
     depthFunc: DepthModes
 
     /**
