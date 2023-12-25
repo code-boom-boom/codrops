@@ -45,52 +45,52 @@ const initializer = async (target: HTMLCanvasElement) => {
   canvas = target
 
   const images = await loadImages([
-    { name: 'dropAlpha', src: 'assets/raindrop/drop-alpha.png' },
-    { name: 'dropColor', src: 'assets/raindrop/drop-color.png' },
+    { name: 'dropAlpha', src: 'assets/rain-drop/drop-alpha.png' },
+    { name: 'dropColor', src: 'assets/rain-drop/drop-color.png' },
 
     {
       name: 'textureRainFg',
-      src: 'assets/raindrop/weather/texture-rain-fg.png'
+      src: 'assets/rain-drop/weather/texture-rain-fg.png'
     },
     {
       name: 'textureRainBg',
-      src: 'assets/raindrop/weather/texture-rain-bg.png'
+      src: 'assets/rain-drop/weather/texture-rain-bg.png'
     },
 
     {
       name: 'textureStormLightningFg',
-      src: 'assets/raindrop/weather/texture-storm-lightning-fg.png'
+      src: 'assets/rain-drop/weather/texture-storm-lightning-fg.png'
     },
     {
       name: 'textureStormLightningBg',
-      src: 'assets/raindrop/weather/texture-storm-lightning-bg.png'
+      src: 'assets/rain-drop/weather/texture-storm-lightning-bg.png'
     },
 
     {
       name: 'textureFalloutFg',
-      src: 'assets/raindrop/weather/texture-fallout-fg.png'
+      src: 'assets/rain-drop/weather/texture-fallout-fg.png'
     },
     {
       name: 'textureFalloutBg',
-      src: 'assets/raindrop/weather/texture-fallout-bg.png'
+      src: 'assets/rain-drop/weather/texture-fallout-bg.png'
     },
 
     {
       name: 'textureSunFg',
-      src: 'assets/raindrop/weather/texture-sun-fg.png'
+      src: 'assets/rain-drop/weather/texture-sun-fg.png'
     },
     {
       name: 'textureSunBg',
-      src: 'assets/raindrop/weather/texture-sun-bg.png'
+      src: 'assets/rain-drop/weather/texture-sun-bg.png'
     },
 
     {
       name: 'textureDrizzleFg',
-      src: 'assets/raindrop/weather/texture-drizzle-fg.png'
+      src: 'assets/rain-drop/weather/texture-drizzle-fg.png'
     },
     {
       name: 'textureDrizzleBg',
-      src: 'assets/raindrop/weather/texture-drizzle-bg.png'
+      src: 'assets/rain-drop/weather/texture-drizzle-bg.png'
     }
   ])
   textureRainFg = images.textureRainFg.img
