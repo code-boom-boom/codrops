@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { redirect } from 'react-router-dom'
+import Bird from './Bird'
 
 let scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
@@ -15,7 +16,7 @@ let scene: THREE.Scene,
   container: HTMLDivElement
 
 //SCENE
-let floor, brid1, bird2
+let floor, bird1, bird2, bird3
 
 //SCREEN VARIABLES
 
@@ -45,8 +46,7 @@ const init = (target: HTMLDivElement) => {
   renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true })
   renderer.setPixelRatio(window.devicePixelRatio)
   renderer.setSize(WIDTH, HEIGHT)
-  renderer.shadowMap.enabled = true
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  renderer.shadowMapEnabled = true
 
   container = target
   container.innerHTML = ''
@@ -62,10 +62,12 @@ const createLights = () => {
   shadowLight = new THREE.DirectionalLight(0xffffff, 0.8)
   shadowLight.position.set(200, 200, 200)
   shadowLight.castShadow = true
+  shadowLight.shadowDarkness = 0.2
 
   backLight = new THREE.DirectionalLight(0xffffff, 0.4)
   backLight.position.set(-100, 200, 50)
   backLight.castShadow = true
+  backLight.shadowDarkness = 0.1
 
   scene.add(light)
   scene.add(shadowLight)
@@ -73,7 +75,10 @@ const createLights = () => {
 }
 
 const createFloor = () => {
-  floor = new THREE.Mesh(new THREE.PlaneGeometry(1000, 1000), new THREE.MeshBasicMaterial({ color: 0xe0dacd }))
+  floor = new THREE.Mesh(
+    new THREE.PlaneBufferGeometry(1000, 1000),
+    new THREE.MeshBasicMaterial({ color: 0xe0dacd })
+  )
   floor.rotation.x = -Math.PI / 2
   floor.position.y = -33
   floor.receiveShadow = true
@@ -81,7 +86,23 @@ const createFloor = () => {
 }
 
 const createBirds = () => {
-  
+  bird1 = new Bird()
+  bird1.threegroup.position.x = 0
+  scene.add(bird1.threegroup)
+
+  bird2 = new Bird()
+  bird2.threegroup.position.x = -250
+  bird2.side = 'right'
+  bird2.threegroup.scale.set(0.8, 0.8, 0.8)
+  bird2.threegroup.position.y = -8
+  scene.add(bird2.threegroup)
+
+  bird3 = new Bird()
+  bird3.threegroup.position.x = 250
+  bird3.side = 'left'
+  bird3.threegroup.scale.set(0.8, 0.8, 0.8)
+  bird3.threegroup.position.y = -8
+  scene.add(bird3.threegroup)
 }
 
 const loop = () => {

@@ -143,7 +143,9 @@ export default class Lion {
     this.bodyVertices = [0, 1, 2, 3, 4, 10]
 
     for (let i = 0; i < this.bodyVertices.length; i++) {
-      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      const tv = (this.body.geometry as THREE.Geometry).vertices[
+        this.bodyVertices[i]
+      ]
       tv.z = 70
       this.bodyInitPositions.push({ x: tv.x, y: tv.y, z: tv.z })
     }
@@ -499,10 +501,12 @@ export default class Lion {
 
     for (i = 0; i < this.bodyVertices.length; i++) {
       const tvInit = this.bodyInitPositions[i]
-      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      const tv = (this.body.geometry as THREE.Geometry).vertices[
+        this.bodyVertices[i]
+      ]
       tv.x = tvInit.x + this.head.position.x
     }
-    (this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
+    ;(this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
   }
 
   cool(xTarget: number, yTarget: number) {
@@ -577,10 +581,12 @@ export default class Lion {
 
     for (i = 0; i < this.bodyVertices.length; i++) {
       const tvInit = this.bodyInitPositions[i]
-      const tv = (this.body.geometry as THREE.Geometry).vertices[this.bodyVertices[i]]
+      const tv = (this.body.geometry as THREE.Geometry).vertices[
+        this.bodyVertices[i]
+      ]
       tv.x = tvInit.x + this.head.position.x
     }
-    (this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
+    ;(this.body.geometry as THREE.Geometry).verticesNeedUpdate = true
   }
 
   updateBody(speed: number) {
